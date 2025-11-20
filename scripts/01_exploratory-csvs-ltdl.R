@@ -7,21 +7,21 @@ library(tidyverse)
 
 # Load data ---------------------------------------------------------------
 
-project.info.raw <- read_csv("data/raw/Project_Info_LO.csv")
+project.info.raw <- read_csv("data/raw/Project_Info_R.csv")
 prjid.fix <- read_csv("data/data-wrangling-intermediate/01_project-info_fix-rows.csv")
-treatment.info.raw <- read_csv("data/raw/Treatment_Info_LO.csv")
+treatment.info.raw <- read_csv("data/raw/Treatment_Info_R.csv")
 trtid.fix <- read_csv("data/data-wrangling-intermediate/01_treatment-info_fix-rows.csv")
 
 # Data wrangling ----------------------------------------------------------
 
-# Fix rows that need replacement - Project_Info.csv
+# Fix rows that need replacement in Project_Info_R.csv
 project.info <- project.info.raw %>% 
   filter(!Prj_ID %in% prjid.fix$Prj_ID)
 project.info <- project.info %>% 
   bind_rows(prjid.fix) %>% 
   arrange(Prj_ID)
 
-# Fix rows that need replacement - Treatment_Info.csv
+# Fix rows that need replacement in Treatment_Info_R.csv
 treatment.info <- treatment.info.raw %>% 
   filter(!Trt_ID %in% trtid.fix$Trt_ID)
 treatment.info <- treatment.info %>% 
