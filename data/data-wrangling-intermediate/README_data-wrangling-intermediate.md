@@ -5,7 +5,7 @@ Updated: 2025-12-04
 
 ## Directory
 ### `01`
-Relates to `scripts/01_exploratory-csvs.ltdl.R`
+Relates to `scripts/01_exploratory-csvs-LTDL.R`
 - `01_Monitoring_Desc-overflow-text.docx`
     - A Word document containing all the overflow text from the `Monitoring_Desc` column in `data/raw/downloaded/LTDL_data_csvs/Project_Info.csv`. 
     - Overflow text was created because Excel CSVs have a limit on the number of characters a single cell can hold. This problem does not happen in the GIS geodatabase version of the table.
@@ -24,6 +24,7 @@ Relates to `scripts/01_exploratory-csvs.ltdl.R`
     - A more detailed explanation of what rows need to be fixed and how.
 
 ### `02`
+Relates to `scripts/02_collate-LDC.R`.
 - `02a_output1_soil1.csv`
 - `02a_output1_soil2.csv`
 - `02a_output1_soil3.csv`

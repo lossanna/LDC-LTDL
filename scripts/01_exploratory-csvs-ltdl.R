@@ -137,3 +137,10 @@ unique(treatment.info$Control_Areas)
 
 # Seed_Application_Rate
 unique(treatment.info$Seed_Application_Rate)
+
+
+
+# Write out fixed CSVs as version 0.0.0 -----------------------------------
+
+write_csv(project.info,
+          file = "data/LTDL-versions/01_Project-info_v0.0.0.csv")
