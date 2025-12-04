@@ -7,8 +7,12 @@ Each subfolder contains its own README.
 
 ## Directory
 - `data-wrangling-intermediate/`
+- `from-Ron/`
+    - Cleaned data that Ron used for analysis.
 - `LDC-points/`
-    - Shapefiles of the LDC points, created from `scripts/03_ldc-to-shapefile.R`.
+    - Shapefiles of the LDC points, created from `scripts/03_LDC-to-shapefile.R`.
+    - Not pushed to GitHub.
+- `LTDL-versions/`
     - Not pushed to GitHub.
 - `raw/`
     - Raw data; most files not pushed to GitHub.
