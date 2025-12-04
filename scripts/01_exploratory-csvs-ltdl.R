@@ -1,5 +1,5 @@
 # Created: 2025-09-29
-# Updated: 2025-12-03
+# Updated: 2025-12-04
 
 # Purpose: Explore treatment and project info from LTDL CSVs.
 
@@ -139,8 +139,14 @@ unique(treatment.info$Control_Areas)
 unique(treatment.info$Seed_Application_Rate)
 
 
+# Trt_Feature_Type
+unique(treatment.info$Trt_Feature_Type)
+
 
 # Write out fixed CSVs as version 0.0.0 -----------------------------------
 
 write_csv(project.info,
           file = "data/LTDL-versions/01_Project-info_v0.0.0.csv")
+
+write_csv(treatment.info,
+          file = "data/LTDL-versions/01_Treatment-info_v0.0.0.csv")
