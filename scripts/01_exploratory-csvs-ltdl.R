@@ -138,9 +138,21 @@ unique(treatment.info$Control_Areas)
 # Seed_Application_Rate
 unique(treatment.info$Seed_Application_Rate)
 
+# Planned_Implementation
+unique(treatment.info$Planned_Implementation)
 
 # Trt_Feature_Type
 unique(treatment.info$Trt_Feature_Type)
+
+# Feature_Status
+unique(treatment.info$Feature_Status)
+count(treatment.info, Feature_Status)
+
+# How_Feature_Created
+unique(treatment.info$How_Feature_Created)
+
+# Initiated_By
+unique(treatment.info$Initiated_By)
 
 
 # Write out fixed CSVs as version 0.0.0 -----------------------------------

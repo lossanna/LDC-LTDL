@@ -20,6 +20,11 @@ treatment.info <- treatment.info.raw %>%
 treatment.info <- treatment.info %>% 
   filter(Plan_Imp == "Implemented")
 
+# Confirmed features only
+count(treatment.info, Feature_Status)
+treatment.info$Feature_Status[treatment.info$Feature_Status == "confirmed"] <- "Confirmed"
+treatment.info <- treatment.info %>% 
+  filter(Feature_Status == "Confirmed")
 
 
 
