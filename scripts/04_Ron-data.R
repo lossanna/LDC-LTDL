@@ -22,3 +22,28 @@ unique(ron.data$mlra)
 
 # mlra_name
 unique(ron.data$mlra_name)
+
+# fire_frq
+unique(ron.data$fire_frq)
+
+
+# Trt_Type_M
+unique(ron.data$Trt_Type_M)
+
+# Trt_Type_S
+unique(ron.data$Trt_Type_S)
+
+# treatment
+unique(ron.data$treatment)
+
+# rcnt_ptrt_type
+unique(ron.data$rcnt_ptrt_type)
+
+# fire_occ
+unique(ron.data$fire_occ)
+
+# fire_binary
+unique(ron.data$fire_binary)
+
+# trt_control
+unique(ron.data$trt_control)
