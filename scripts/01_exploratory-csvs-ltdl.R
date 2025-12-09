@@ -155,6 +155,28 @@ unique(treatment.info$How_Feature_Created)
 unique(treatment.info$Initiated_By)
 
 
+# Examine treatment points ------------------------------------------------
+
+trt.point <- treatment.info %>% 
+  filter(Trt_Feature_Type %in% c("Point", "Multipoint"))
+
+count(trt.point, Trt_Type_Major)
+count(trt.point, Trt_Type_Sub) %>% 
+  print(n = 32)
+
+
+# Separate out columns for GIS join ---------------------------------------
+
+project.info.gisjoin <- project.info %>% 
+  select(Prj_ID, Status, Prj_Start_Year, Prj_End_Year, Purpose, Feature_Status,
+         Fire_Name, Fire_Year, Major_On_Ground_Treatments)
+
+treatment.info.gisjoin <- treatment.info %>% 
+  select(Prj_ID, Trt_ID, Init_Date, Comp_Date, Trt_Type_Major, Trt_Type_Sub, Treatment_Type,
+         Feature_Status)
+
+
+
 # Write out fixed CSVs as version 0.0.0 -----------------------------------
 
 write_csv(project.info,
@@ -162,3 +184,11 @@ write_csv(project.info,
 
 write_csv(treatment.info,
           file = "data/LTDL-versions/01_Treatment-info_v0.0.0.csv")
+
+
+# GIS join
+write_csv(project.info.gisjoin,
+          file = "data/LTDL-versions/01_Project-info_v0.0.0gisjoin.csv")
+
+write_csv(treatment.info.gisjoin,
+          file = "data/LTDL-versions/01_Treatment-info_v0.0.0gisjoin.csv")
