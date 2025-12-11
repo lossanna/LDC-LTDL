@@ -1,5 +1,5 @@
 # Created: 2025-09-29
-# Updated: 2025-12-05
+# Updated: 2025-12-11
 
 # Purpose: Explore treatment and project info from LTDL CSVs.
 
@@ -165,30 +165,11 @@ count(trt.point, Trt_Type_Sub) %>%
   print(n = 32)
 
 
-# Separate out columns for GIS join ---------------------------------------
 
-project.info.gisjoin <- project.info %>% 
-  select(Prj_ID, Status, Prj_Start_Year, Prj_End_Year, Purpose, Feature_Status,
-         Fire_Name, Fire_Year, Major_On_Ground_Treatments)
-
-treatment.info.gisjoin <- treatment.info %>% 
-  select(Prj_ID, Trt_ID, Init_Date, Comp_Date, Trt_Type_Major, Trt_Type_Sub, Treatment_Type,
-         Feature_Status)
-
-
-
-# Write out fixed CSVs as version 0.0.0 -----------------------------------
+# Write out fixed CSVs as version 000 -------------------------------------
 
 write_csv(project.info,
-          file = "data/LTDL-versions/01_Project-info_v0.0.0.csv")
+          file = "data/LTDL-versions/01_Project-info_v000.csv")
 
 write_csv(treatment.info,
-          file = "data/LTDL-versions/01_Treatment-info_v0.0.0.csv")
-
-
-# GIS join
-write_csv(project.info.gisjoin,
-          file = "data/LTDL-versions/01_Project-info_v0.0.0gisjoin.csv")
-
-write_csv(treatment.info.gisjoin,
-          file = "data/LTDL-versions/01_Treatment-info_v0.0.0gisjoin.csv")
+          file = "data/LTDL-versions/01_Treatment-info_v000.csv")
