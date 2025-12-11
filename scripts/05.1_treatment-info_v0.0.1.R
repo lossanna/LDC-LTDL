@@ -1,5 +1,5 @@
 # Created: 2025-12-04
-# Updated: 2025-12-09
+# Updated: 2025-12-10
 
 # Purpose: Complete initial data cleaning to create Treatment_Info v0.0.1.
 
@@ -253,6 +253,12 @@ neg.elapse.both.est.fix <- neg.elapse %>%
   filter(init_est == "estimated day" & comp_est == "estimated month and day") %>% 
   mutate(comp_date_est = init_date_est)%>% 
   mutate(init_comp_elapsed = comp_date_est - init_date_est)
+
+
+# Check for unique Trt_ID -------------------------------------------------
+
+treatment.info %>% 
+  summarise(all_unique = n() == n_distinct(Trt_ID))
 
 
 ## Add in fixes -----------------------------------------------------------
