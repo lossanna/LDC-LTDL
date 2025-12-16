@@ -1,41 +1,48 @@
 # Created: 2025-12-11
-# Updated: 2025-12-12
+# Updated: 2025-12-16
 
 # Purpose: Try to figure out what is going on with the CountOverlapping and OverlapTable tables 
 #   created from ArcGIS Pro Count Overlapping Features tool after running a Union on
-#   the filtered (v0.0.1) LTDL treatment polygons.
+#   the filtered (v001) LTDL treatment polygons.
 
 # Basically, I am trying to connect three tables created from geoprocessing in ArcGIS Pro:
 #   1. The polygon Union table, which has the treatment info,
 #   2. The CountOverlapping table, which has the count of the number of overlaps per unique polygon in space
-#   3. The OverlapTable, which has the ObjID of the CountOverlapping table and ObjID the Union table
+#   3. The OverlapTable, which has the ObjectID of the CountOverlapping table and ObjectID the Union table
 
+# Ultimately, I want a table with an ObjectID that connects to treatment info (includes overlaps), 
+#   an ObjectID that is unique in space (doesn't have overlaps), and the count of the number of overlaps.
+# Doing a left_join() between all three tables creates a table that has all the polygons with treatment info,
+#   as well as if they are unique overlaps in space.
+
+# A few polygons in the Union table were weirdly missing from the OverlapTable table, but those polygons
+#   don't contain LDC points, so they won't be used for further analysis, anyway.
 
 library(tidyverse)
 
 # Load data ---------------------------------------------------------------
 
-trt.union.raw <- read_csv("data/GIS-exports/001_Trt-poly-001-union_export.csv")
-trt.countoverlapping.raw <- read_csv("data/GIS-exports/001_Trt-poly-001-union-countoverlapping_export.csv")
-trt.overlaptable.raw <- read_csv("data/GIS-exports/001_Trt-poly-001-union-overlaptable_export.csv")
+trt.union <- read_csv("data/GIS-exports/001_TrtPoly001-Union_export.csv")
+trt.countoverlapping <- read_csv("data/GIS-exports/001_TrtPoly001-Union-CountOverlapping_export.csv")
+trt.overlaptable <- read_csv("data/GIS-exports/001_TrtPoly001-Union-OverlapTable_export.csv")
 
-ldc.trt.sjoin.raw <- read_csv("data/GIS-exports/001_LDC_Trt_SpatialJoin.csv")
+trt.ldc.sjoin <- read_csv("data/GIS-exports/001_TrtPoly001_LDC_SpatialJoin_export.csv")
 
 
 # Find number of unique polygons in space ---------------------------------
 
 # Check if CountOverlapping has only unique geometry
-trt.countoverlapping.unqgeo <- trt.countoverlapping.raw %>% 
-  select(SHAPE_Area, SHAPE_Length) %>% 
+trt.countoverlapping.unqgeo <- trt.countoverlapping %>% 
+  select(Shape_Area, Shape_Length) %>% 
   distinct(.keep_all = TRUE)
 nrow(trt.countoverlapping.raw) == nrow(trt.countoverlapping.unqgeo)
 nrow(trt.countoverlapping.raw) - nrow(trt.countoverlapping.unqgeo) # one row has identical geometry
 
 #   Examine extra row in CountOverlapping
-trt.countoverlapping.raw %>%
-  group_by(SHAPE_Length, SHAPE_Area) %>%
+trt.countoverlapping %>%
+  group_by(Shape_Length, Shape_Area) %>%
   filter(n() > 1) %>%
-  arrange(SHAPE_Length, SHAPE_Area)
+  arrange(Shape_Length, Shape_Area)
 #   Manually check these polygons in ArcGIS Pro and see that they are not overlapping
 #     (they are right next to each other and literally are just the same size);
 #   this means that CountOverlapping is in fact every polygon that occupies unique space.
@@ -43,35 +50,25 @@ trt.countoverlapping.raw %>%
 
 # Connect Union table with treatment info with OverlapTable ---------------
 
-# Rename ObjectID columns to allow for join
-trt.overlaptable <- trt.overlaptable.raw %>% 
-  rename(ObjectID_CountOverlapping = OVERLAP_OID,
-         ObjectID_Union = ORIG_OID)
-
 # Join Union table with OverlapTable (which contains ObjectID_CountOverlapping)
-trt.union.join <- trt.union.raw %>% 
+trt.union.join <- trt.union %>% 
   left_join(trt.overlaptable)
 
 # Join Union table with CountOverlapping
 trt.union.join <- trt.union.join %>% 
-  left_join(trt.countoverlapping.raw)
+  left_join(trt.countoverlapping)
 
 #   Look for rows in Union table missing from OverlapTable
 trt.union.OTmissing <- trt.union.join %>% 
   filter(is.na(ObjectID_CountOverlapping))
-nrow(trt.union.OTmissing) + nrow(trt.overlaptable) == nrow(trt.union.raw)
-
+nrow(trt.union.OTmissing) + nrow(trt.overlaptable) == nrow(trt.union)
 
 
 
 # Examine treatment polygons with LDC points ------------------------------
 
 # Look to see if the rows missing from the Union table contain LDC points
-ldc.trt.sjoin.raw %>% 
+trt.ldc.sjoin %>% 
   filter(ObjectID_Union %in% trt.union.OTmissing$ObjectID_Union)
 #   No polygons with missing overlap info also contain LDC points, so trt.union.OTmissing does not
 #     need to be addressed
-
-# Find polygons that contain LDC points
-trt.with.ldc <- trt.union.join %>% 
-  filter(ObjectID_Union %in% ldc.trt.sjoin.raw$ObjectID_Union)
