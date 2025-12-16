@@ -35,8 +35,8 @@ trt.ldc.sjoin <- read_csv("data/GIS-exports/001_TrtPoly001_LDC_SpatialJoin_expor
 trt.countoverlapping.unqgeo <- trt.countoverlapping %>% 
   select(Shape_Area, Shape_Length) %>% 
   distinct(.keep_all = TRUE)
-nrow(trt.countoverlapping.raw) == nrow(trt.countoverlapping.unqgeo)
-nrow(trt.countoverlapping.raw) - nrow(trt.countoverlapping.unqgeo) # one row has identical geometry
+nrow(trt.countoverlapping) == nrow(trt.countoverlapping.unqgeo)
+nrow(trt.countoverlapping) - nrow(trt.countoverlapping.unqgeo) # one row has identical geometry
 
 #   Examine extra row in CountOverlapping
 trt.countoverlapping %>%
