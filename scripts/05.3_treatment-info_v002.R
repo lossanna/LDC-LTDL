@@ -10,7 +10,7 @@
 # 4. General Site Preparation (41)
 # 5. Other Treatment: Other (See Notes) (165)
 # 6. "Experimental Plots: Multiple Treatments" (11)
-# 7. Treament_Type with only 1-2 polygons of that type (45)
+# 7. Treatment_Type with only 1-2 polygons of that type (45)
 
 
 library(tidyverse)

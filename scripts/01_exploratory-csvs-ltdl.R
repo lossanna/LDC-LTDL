@@ -1,7 +1,9 @@
 # Created: 2025-09-29
 # Updated: 2025-12-11
 
-# Purpose: Explore treatment and project info from LTDL CSVs.
+# Purpose: Explore treatment and project info from LTDL CSVs and construct Excel spreadsheets that  
+#   describe the columns for Project_Info and Treatment_Info tables. Write out v000, which has
+#   fixed the issues created by overflow text of a single cell.
 
 library(tidyverse)
 

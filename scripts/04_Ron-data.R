@@ -1,7 +1,8 @@
 # Created: 2025-12-04
 # Updated: 2025-12-04
 
-# Purpose: Explore the data Ron used for analysis.
+# Purpose: Explore the data Ron used for analysis and construct Excel spreadsheets that  
+#   describe the columns.
 
 library(tidyverse)
 
