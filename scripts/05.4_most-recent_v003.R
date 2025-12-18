@@ -22,8 +22,8 @@ trt.countoverlapping <- read_csv("data/GIS-exports/002_TrtPoly002-Union-CountOve
 trt.overlaptable <- read_csv("data/GIS-exports/002_TrtPoly002-Union-OverlapTable_export.csv")
 trt.ldc.sjoin <- read_csv("data/GIS-exports/002_TrtPoly002_LDC_SpatialJoin_export.csv")
 ldc.points <- read_csv("data/GIS-exports/002_LDC-points-WGS-1984_export.csv")
-ldc.countoverlapping <- read_csv("data/GIS-exports/002_LDC-CountOverlapping_export.csv")
-ldc.overlaptable <- read_csv("data/GIS-exports/002_LDC-OverlapTable_export.csv")
+ldc.countoverlapping <- read_csv("data/GIS-exports/002_LDC002-CountOverlapping_export.csv")
+ldc.overlaptable <- read_csv("data/GIS-exports/002_LDC002-OverlapTable_export.csv")
 
 # Treatment info
 treatment.info.002 <- read_csv("data/LTDL-versions/05.3_Treatment-info_v002.csv")
@@ -133,10 +133,24 @@ mr.trt003.multiple.same.trt <- mr.trt003.multiple %>%
 
 # Append entire treatment info table and write to CSV for further inspection
 mr.trt003.multiple.same.trt <- mr.trt003.multiple.same.trt %>% 
-  left_join(treatment.info.002)
+  left_join(treatment.info.002) %>% 
+  arrange(ObjectID_CountOverlapping)
 
+# OUTPUT: Treatment polygons with multiple most recent comp_date_est and same Treatment_Type
 write_csv(mr.trt003.multiple.same.trt,
           file = "data/data-wrangling-intermediate/05.4a_output1_Treatment-polygons-with-multiple-most-recent-date-and-same-treatment-type.csv")
+
+
+# Write out remaining to CSV for further inspection
+mr.trt003.multiple.diff.trt <- mr.trt003.multiple %>% 
+  filter(!ObjectID_Union %in% mr.trt003.multiple.same.trt$ObjectID_Union) %>% 
+  left_join(treatment.info.002) %>% 
+  arrange(ObjectID_CountOverlapping)
+
+# OUTPUT: Treatment polygons with multiple most recent comp_date_est and different Treatment_Type
+write_csv(mr.trt003.multiple.diff.trt,
+          file = "data/data-wrangling-intermediate/05.4a_output2_Treatment-polygons-with-multiple-most-recent-date-and-different-treatment-type.csv")
+
 
 
 # LDC points --------------------------------------------------------------
@@ -343,7 +357,7 @@ mr.ldc003.multiple <- mr.ldc003.multiple %>%
 
 # OUTPUT: LDC points with multiple DateVisted of the same value
 write_csv(mr.ldc003.multiple,
-          file = "data/data-wrangling-intermediate/05.4a_output2_LDC_multiple-same-DateVisted.csv")
+          file = "data/data-wrangling-intermediate/05.4a_output3_LDC_multiple-same-DateVisted.csv")
 
 
 

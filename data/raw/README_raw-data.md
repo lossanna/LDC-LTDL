@@ -15,7 +15,7 @@ LTDL
 
 ## Data downloads
 - Land Treatment Digital Library:
-    - Downloaded from: https://doi.org/10.5066/P98OBOLS (v7.0, released Sept 2024; download `LTDL_Sept_2024_Release.zip` to get folder of CSVs).
+    - Downloaded from: https://doi.org/10.5066/P98OBOLS on 2025-06-24 (v7.0, released Sept 2024; download `LTDL_Sept_2024_Release.zip` to get folder of CSVs).
 - Landscape Data Commons:
     - Downloaded from https://landscapedatacommons.org/ldc-map on 2025-09-30.
         - Four data packets downloaded in sections (see `Batches-of-LDC-data-downloaded.pptx`).
