@@ -1,16 +1,16 @@
 # Created: 2025-12-16
-# Updated: 2025-12-16
+# Updated: 2026-01-05
 
 # Purpose: Additional treatment filtering to create Treatment_info v002.
 
 # Remove:
-# 1. Prescribed burns (3430)
-# 2. Cultural Protection treatments (17)
-# 3. Monitoring treatments (40)
-# 4. General Site Preparation (41)
-# 5. Other Treatment: Other (See Notes) (165)
-# 6. "Experimental Plots: Multiple Treatments" (11)
-# 7. Treatment_Type with only 1-2 polygons of that type (45)
+# 1. Prescribed burns (3430) - will deal with that from USGS combined wildland fire datasets
+# 2. Cultural Protection treatments (17) - likely did not alter vegetation
+# 3. Monitoring treatments (40) - likely did not alter vegetation
+# 4. General Site Preparation (41) - vague & included multiple kinds of treatments
+# 5. Other Treatment: Other (See Notes) (165) - vague & included multiple kinds of treatments
+# 6. Experimental Plots: Multiple Treatments (11) - included multiple kinds of treatments
+# 7. Treatment_Type with only 1-2 polygons of that type (45) - not enough replication
 
 
 library(tidyverse)
