@@ -1,14 +1,12 @@
 # Created: 2025-12-17
-# Updated: 2025-12-17
+# Updated: 2026-01-05
 
 # Purpose: Extract most recent treatment for each polygon that occupies unique space, 
 #   and compile a list of LDC points that have only the most recent monitoring date
-#   for plots that were sampled multiple times.
+#   for plots that were sampled multiple times. 
 
-# Note about dates: ArcGIS Pro is annoying and writes out dates in CSVs in a format that R
-#   can't recognize as a date (because month & day don't always have two digits),
-#   so it is easiest to use the full Treatment-info_v002.csv version to add on 
-#   init_date_est and comp_date_est in a format that R recognizes as a date.
+# Input: Map_002 outputs.
+# Output: Treatment info v003, LDC v003.
 
 
 library(tidyverse)
@@ -62,7 +60,6 @@ trt.join <- trt.join %>%
   rename(treatment_count = COUNT_)
 
 
-
 ## Narrow down to treatment polygons with LDC points ----------------------
 
 # Narrow down to polygons with LDC points
@@ -72,22 +69,14 @@ trt.poly.003 <- trt.join %>%
 #   Look for NAs
 apply(trt.poly.003, 2, anyNA)
 
-
 #   Look for ObjectID_Union in OT.missing table that have LDC points
 trt.ldc.sjoin %>% 
   filter(ObjectID_Union %in% OT.missing$ObjectID_Union) # none
 
-
-# Swap init_date_est and comp_date_est columns with treatment.info.002 version
-#    so columns will be recognized as dates
-est.date.cols <- treatment.info.002 %>% 
-  select(Trt_ID, init_date_est, comp_date_est)
+# Reformat date cols
 trt.poly.003 <- trt.poly.003 %>% 
-  select(-init_date_est, -comp_date_est) %>% 
-  left_join(est.date.cols)
-
-#   Look for NAs
-apply(trt.poly.003, 2, anyNA)
+  mutate(init_date_est = as.Date(init_date_est, format = "%m/%d/%Y"),
+         comp_date_est = as.Date(comp_date_est, format = "%m/%d/%Y"))
 
 
 ## Extract rows of most recent treatment ----------------------------------
@@ -116,15 +105,6 @@ mr.trt003.multiple <- most.recent.trt003 %>%
   filter(n() > 1) %>%
   ungroup()
 
-# Create df of date cols to join from complete Treatment_Info_v002 table
-datecols.join <- treatment.info.002 %>% 
-  select(Trt_ID, Init_Date, Comp_Date, init_est, init_date_est, comp_est, 
-         comp_date_est, init_comp_elapsed)
-
-# Join date cols with df of that has multiple most recent date for comp_date_est
-mr.trt003.multiple <- mr.trt003.multiple %>% 
-  left_join(datecols.join)
-
 # Separate overlapping polygons with multiple/same comp_date_est and same Treatment_Type
 mr.trt003.multiple.same.trt <- mr.trt003.multiple %>% 
   group_by(ObjectID_CountOverlapping, Treatment_Type) %>% 
@@ -139,6 +119,8 @@ mr.trt003.multiple.same.trt <- mr.trt003.multiple.same.trt %>%
 # OUTPUT: Treatment polygons with multiple most recent comp_date_est and same Treatment_Type
 write_csv(mr.trt003.multiple.same.trt,
           file = "data/data-wrangling-intermediate/05.4a_output1_Treatment-polygons-with-multiple-most-recent-date-and-same-treatment-type.csv")
+
+
 
 
 # Write out remaining to CSV for further inspection
@@ -180,27 +162,6 @@ ldc.join <- ldc.join %>%
 ldc.join <- ldc.join %>% 
   mutate(DateVisted = as.Date(as.POSIXct(DateVisted, format = "%m/%d/%Y %H:%M:%S")))
 
-
-## Investigate PrimaryKey -------------------------------------------------
-
-# Separate out last 10 characters from PrimaryKey
-ldc.primarykey <- ldc.join %>% 
-  select(ProjKey, PrimaryKey, DateVisted) %>% 
-  mutate(PrimKeyDate = substr(PrimaryKey, nchar(PrimaryKey) - 9, nchar(PrimaryKey)))
-
-# Remove ones that are clearly not in YYY-MM-DD format
-ldc.primarykey.potentialdate <- ldc.primarykey %>% 
-  filter(!str_detect(PrimKeyDate, "_|P|R|B|O|G|L|A|U|/")) %>% 
-  mutate(PrimKeyDate = as.Date(PrimKeyDate))
-
-# Extract ones where the potential date from the PrimaryKey doesn't match DateVisted
-ldc.primkey.nomatch <- ldc.primarykey.potentialdate %>% 
-  filter(DateVisted != PrimKeyDate)
-nrow(ldc.primkey.nomatch)
-nrow(ldc.primarykey.potentialdate)  
-nrow(ldc.primkey.nomatch) / nrow(ldc.primarykey.potentialdate)
-#   96% of PrimaryKeys do not have a matching DateVisted value so clearly that is 
-#     not what those digits stand for lol
 
 
 ## Rename geoindicator cols to match LDC points table ---------------------
@@ -362,4 +323,4 @@ write_csv(mr.ldc003.multiple,
 
 
 
-save.image("RData/05.4_most-recent_v003.RData")
+save.image("RData/05.4_most-recent_trt_v003.RData")
