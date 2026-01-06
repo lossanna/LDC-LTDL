@@ -1,5 +1,5 @@
 # Created: 2025-09-29
-# Updated: 2025-12-11
+# Updated: 2026-01-06
 
 # Purpose: Explore treatment and project info from LTDL CSVs and construct Excel spreadsheets that  
 #   describe the columns for Project_Info and Treatment_Info tables. Write out v000, which has
@@ -171,7 +171,7 @@ count(trt.point, Trt_Type_Sub) %>%
 # Write out fixed CSVs as version 000 -------------------------------------
 
 write_csv(project.info,
-          file = "data/LTDL-versions/01_Project-info_v000.csv")
+          file = "data/versions-from-R/01_Project-info_v000.csv")
 
 write_csv(treatment.info,
-          file = "data/LTDL-versions/01_Treatment-info_v000.csv")
+          file = "data/versions-from-R/01_Treatment-info_v000.csv")

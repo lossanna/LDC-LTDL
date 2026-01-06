@@ -1,5 +1,5 @@
 # Created: 2025-12-16
-# Updated: 2026-01-05
+# Updated: 2026-01-06
 
 # Purpose: Additional treatment filtering to create Treatment_info v002.
 
@@ -17,7 +17,7 @@ library(tidyverse)
 
 # Load data ---------------------------------------------------------------
 
-treatment.info.001 <- read_csv("data/LTDL-versions/05.1_Treatment-info_v001.csv")
+treatment.info.001 <- read_csv("data/versions-from-R/05.1_Treatment-info_v001.csv")
 
 
 # Data cleaning -----------------------------------------------------------
@@ -93,10 +93,10 @@ treatment.info.gisjoin <- treatment.info %>%
 # Write out as v001 -------------------------------------------------------
 
 write_csv(treatment.info,
-          file = "data/LTDL-versions/05.3_Treatment-info_v002.csv")
+          file = "data/versions-from-R/05.3_Treatment-info_v002.csv")
 
 write_csv(treatment.info.gisjoin,
-          file = "data/LTDL-versions/05.3_Treatment-info_v002-gisjoin.csv")
+          file = "data/versions-from-R/05.3_Treatment-info_v002-gisjoin.csv")
 
 
 save.image("RData/05.3_treatment-info_v002.RData")

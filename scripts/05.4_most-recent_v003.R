@@ -1,5 +1,5 @@
 # Created: 2025-12-17
-# Updated: 2026-01-05
+# Updated: 2026-01-06
 
 # Purpose: Extract most recent treatment for each polygon that occupies unique space, 
 #   and compile a list of LDC points that have only the most recent monitoring date
@@ -24,7 +24,7 @@ ldc.countoverlapping <- read_csv("data/GIS-exports/002_LDC002-CountOverlapping_e
 ldc.overlaptable <- read_csv("data/GIS-exports/002_LDC002-OverlapTable_export.csv")
 
 # Treatment info
-treatment.info.002 <- read_csv("data/LTDL-versions/05.3_Treatment-info_v002.csv")
+treatment.info.002 <- read_csv("data/versions-from-R/05.3_Treatment-info_v002.csv")
 
 # Geoindicators
 geoindicators.raw <- read_csv("data/raw/LDC/geoindicators.csv")

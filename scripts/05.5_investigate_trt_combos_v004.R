@@ -1,5 +1,5 @@
 # Created: 2026-01-05
-# Updated: 2026-01-05
+# Updated: 2026-01-06
 
 # Purpose: Extract most recent treatment for each polygon that occupies unique space,
 #   as well as any treatments within a year of most recent treatment. Investigate
@@ -18,7 +18,7 @@ trt.overlaptable <- read_csv("data/GIS-exports/002_TrtPoly002-Union-OverlapTable
 trt.ldc.sjoin <- read_csv("data/GIS-exports/002_TrtPoly002_LDC_SpatialJoin_export.csv")
 
 # Treatment info
-treatment.info.002 <- read_csv("data/LTDL-versions/05.3_Treatment-info_v002.csv")
+treatment.info.002 <- read_csv("data/versions-from-R/05.3_Treatment-info_v002.csv")
 
 
 # Treatment polygons ------------------------------------------------------
@@ -113,7 +113,10 @@ count(mr.overlaps.trt004, Trt_Type_Major) %>%
 
 
 
-x <- trt.ldc.sjoin %>% 
+# Examine treatments with LDC points --------------------------------------
+
+# Any Trt_ID that overlaps with an LDC point
+trt.ldc <- trt.ldc.sjoin %>% 
   select(Prj_ID, Trt_ID, init_date_est, comp_date_est, Trt_Type_Major, Trt_Type_Sub,
          Treatment_Type) %>% 
   distinct(.keep_all = TRUE)
