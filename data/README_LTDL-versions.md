@@ -20,9 +20,11 @@ Updated: 2025-12-17
 - Filtered to only include polygons, implemented plans, and comfirmed features.
 - Estimated dates of initiation and completion added.
 - CSVs ending in `_v001-gisjoin` are versions with only a few selected columns, intended to be loaded into ArcGIS and joined to LTDL polygon features to append some useful data to the features (makes it easier to understanding what is going on when viewing a pop-up window).
+- For more information, see [Google Doc notes (section bookmark)](https://docs.google.com/document/d/1gshsoIPIgJ5tUT7jBK2LmrB_ZmTPzvl8P9q5xpuQqKA/edit?tab=t.0#bookmark=id.1ryfqcz8wuqj).
 
 ### v002
 - Additional filtering of treatment polygons to exclude prescribed burns and other treatments that likely did not impact vegetation or were not described well enough to understand what was happening, as well as treatments with only 1 or 2 polygons in total.
+- For more information, see [Google Doc notes (section bookmark)](https://docs.google.com/document/d/1gshsoIPIgJ5tUT7jBK2LmrB_ZmTPzvl8P9q5xpuQqKA/edit?tab=t.0#bookmark=id.hdgg4s980amh).
 
 
 ## Directory

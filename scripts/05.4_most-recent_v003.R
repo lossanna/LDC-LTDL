@@ -29,6 +29,12 @@ treatment.info.002 <- read_csv("data/LTDL-versions/05.3_Treatment-info_v002.csv"
 # Geoindicators
 geoindicators.raw <- read_csv("data/raw/LDC/geoindicators.csv")
 
+# LDC data
+gap <- read_csv("data/raw/LDC/data-gap.csv")
+height <- read_csv("data/raw/LDC/data-height.csv")
+lpi <- read_csv("data/raw/LDC/data-lpi.csv")
+geospecies <- read_csv("data/raw/LDC/geospecies.csv")
+
 
 # Treatment polygons ------------------------------------------------------
 
@@ -120,6 +126,8 @@ mr.trt003.multiple.same.trt <- mr.trt003.multiple.same.trt %>%
 write_csv(mr.trt003.multiple.same.trt,
           file = "data/data-wrangling-intermediate/05.4a_output1_Treatment-polygons-with-multiple-most-recent-date-and-same-treatment-type.csv")
 
+# EDITED: instances of multiple rows inspected manually, and one row is kept
+#   in progress
 
 
 
@@ -132,6 +140,9 @@ mr.trt003.multiple.diff.trt <- mr.trt003.multiple %>%
 # OUTPUT: Treatment polygons with multiple most recent comp_date_est and different Treatment_Type
 write_csv(mr.trt003.multiple.diff.trt,
           file = "data/data-wrangling-intermediate/05.4a_output2_Treatment-polygons-with-multiple-most-recent-date-and-different-treatment-type.csv")
+
+# EDITED: 
+#   in progress
 
 
 
@@ -283,6 +294,16 @@ ldc.date.na <- ldc.join %>%
 write_csv(ldc.date.na,
           file = "data/data-wrangling-intermediate/05.4_LDC_no-DateVisted.csv")
 
+# Look for DateVisted value from gap & height data
+gap %>% 
+  filter(`Primary Key` %in% ldc.date.na$PrimaryKey)
+height %>% 
+  filter(`Primary Key` %in% ldc.date.na$PrimaryKey)
+lpi %>% 
+  filter(`Primary Key` %in% ldc.date.na$PrimaryKey)
+geospecies %>% 
+  filter(`Primary Key` %in% ldc.date.na$PrimaryKey)
+#   idk none of the primary keys are in any of these datasets
 
 
 ## Extract rows of most recent monitoring ---------------------------------
@@ -320,7 +341,9 @@ mr.ldc003.multiple <- mr.ldc003.multiple %>%
 write_csv(mr.ldc003.multiple,
           file = "data/data-wrangling-intermediate/05.4a_output3_LDC_multiple-same-DateVisted.csv")
 
+# EDITED: instances of multiple rows inspected manually, and one row is kept
+#   in progress
 
 
-
+rm(gap, height, lpi, geospecies)
 save.image("RData/05.4_most-recent_trt_v003.RData")
