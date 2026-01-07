@@ -76,7 +76,7 @@ length(unique(treatment.info$Treatment_Type)) == nrow(major.to.treatment)
 # Write treatment hierarchy table to CSV ----------------------------------
 
 write_csv(major.to.treatment,
-          file = "data/data-wrangling-intermediate/05.1_treatment-hierarchy-table.csv")
+          file = "data/data-wrangling-intermediate/05.1_treatment-hierarchy-table_v001.csv")
 
 
 # Init_Date ---------------------------------------------------------------
