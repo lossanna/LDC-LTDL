@@ -21,7 +21,7 @@ trt.ldc.sjoin <- read_csv("data/GIS-exports/002_TrtPoly002_LDC_SpatialJoin_expor
 treatment.info.002 <- read_csv("data/versions-from-R/05.3_Treatment-info_v002.csv")
 
 
-# Treatment polygons ------------------------------------------------------
+# Create most recent treatment combos -------------------------------------
 
 ## Join Union, CountOverlapping, and OverlapTable -------------------------
 
@@ -123,7 +123,7 @@ trt.ldc <- trt.ldc.sjoin %>%
 
 
 
-# Investigate treatment categories ----------------------------------------
+## Investigate treatment categories ---------------------------------------
 
 # Check for hierarchy
 trt.ldc %>%

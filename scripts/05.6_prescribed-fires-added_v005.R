@@ -34,11 +34,7 @@ pf.missing <- pf.missing.raw %>%
   select(-all_of(empty_cols))
 
 
-# Assign Prj_ID and Trt_ID ------------------------------------------------
-
-# Assign Prj_ID as NA
-pf.missing <- pf.missing %>% 
-  mutate(Prj_ID = NA)
+# Assign Trt_ID -----------------------------------------------------------
 
 # Figure out range of current Trt_ID from LTDL
 range(treatment.info.001$Trt_ID)
@@ -260,7 +256,7 @@ nrow(filter(pf.missing, !is.na(Fire_Calendar_Year))) == nrow(pf.missing.fixed)
 # Separate out columns for GIS join ---------------------------------------
 
 pf.missing.fixed.gisjoin <- pf.missing.fixed %>% 
-  select(Prj_ID, Trt_ID, init_date_est, comp_date_est, Trt_Type_Major, Trt_Type_Sub, Treatment_Type)
+  select(ObjectID_PFMissing, Trt_ID, init_date_est, comp_date_est, Trt_Type_Major, Trt_Type_Sub, Treatment_Type)
 
 
 # Write to CSV ------------------------------------------------------------
