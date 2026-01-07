@@ -1,12 +1,20 @@
 # Created: 2025-12-17
-# Updated: 2026-01-06
+# Updated: 2026-01-07
 
 # Purpose: Extract most recent treatment for each polygon that occupies unique space, 
 #   and compile a list of LDC points that have only the most recent monitoring date
 #   for plots that were sampled multiple times. 
 
 # Input: Map_002 outputs.
-# Output: Treatment info v003, LDC v003.
+# Output: Treatment info v003 (intended but abandoned), LDC v003.
+
+# Status: LTDL treatments incomplete and abandoned (I do not actually want to go through and sort 
+#   through treatments manually). Overlapping LDC points actually dealt with.
+
+# Note about LDC issues: I told Sarah about the issues and she might figure out a way to 
+#   fix incorrect info, but for now I am just making my own rules about dropping duplicate LDC
+#   rows based on the current info that I have (or lack thereof). Decisions are explained
+#   in the 05.4b_edited3.xlsx spreadsheet.
 
 
 library(tidyverse)
@@ -127,7 +135,7 @@ write_csv(mr.trt003.multiple.same.trt,
           file = "data/data-wrangling-intermediate/05.4a_output1_Treatment-polygons-with-multiple-most-recent-date-and-same-treatment-type.csv")
 
 # EDITED: instances of multiple rows inspected manually, and one row is kept
-#   in progress
+#   in progress; unfinished and abandoned
 
 
 
@@ -141,8 +149,8 @@ mr.trt003.multiple.diff.trt <- mr.trt003.multiple %>%
 write_csv(mr.trt003.multiple.diff.trt,
           file = "data/data-wrangling-intermediate/05.4a_output2_Treatment-polygons-with-multiple-most-recent-date-and-different-treatment-type.csv")
 
-# EDITED: 
-#   in progress
+# EDITED: Manually inspect treatment overlaps
+#   in progress; unfinished and abandoned
 
 
 
@@ -304,6 +312,10 @@ lpi %>%
 geospecies %>% 
   filter(`Primary Key` %in% ldc.date.na$PrimaryKey)
 #   idk none of the primary keys are in any of these datasets
+# For now, these rows should just be deleted.
+
+rm(gap, height, lpi, geospecies)
+
 
 
 ## Extract rows of most recent monitoring ---------------------------------
@@ -318,6 +330,7 @@ length(unique(most.recent.ldc003$ObjectID_CountOverlapping)) == nrow(most.recent
 #     for those cases are created
 
 # Separate out points where there is only one most recent date for DateVisted
+#   these ones are fine and don't need fixing
 mr.ldc003.single <- most.recent.ldc003 %>%
   group_by(ObjectID_CountOverlapping) %>%
   filter(n() == 1) %>%
@@ -342,8 +355,41 @@ write_csv(mr.ldc003.multiple,
           file = "data/data-wrangling-intermediate/05.4a_output3_LDC_multiple-same-DateVisted.csv")
 
 # EDITED: instances of multiple rows inspected manually, and one row is kept
-#   in progress
+#   see the spreadsheet for rules about what was kept
+mr.ldc003.multiple.fixed <- read_xlsx("data/data-wrangling-intermediate/05.4b_edited3_LDC_multiple-same-DateVisted.xlsx",
+                                      sheet = "05.4a_output3_LDC_multiple-same")
+
+# Drop rows marked for dropping and delete extra cols
+mr.ldc003.multiple.fixed <- mr.ldc003.multiple.fixed %>% 
+  filter(Keep == "keep") %>% 
+  select(-Keep, -Notes)
 
 
-rm(gap, height, lpi, geospecies)
+## Combine all with corrections -------------------------------------------
+
+# Remove rows with NA for DateVisted and use correction when there are multiple most recent rows
+mr.ldc003 <- mr.ldc003.single %>% 
+  bind_rows(mr.ldc003.multiple.fixed) %>% 
+  filter(!is.na(DateVisted))
+
+
+
+# Separate out columns for GIS join ---------------------------------------
+
+mr.ldc003.gisjoin <- mr.ldc003 %>% 
+  select(ProjKey, PrimaryKey, DateVisted, EcoSiteID, MLRADesc, MLRASym)
+
+
+# Write LDC003 to CSV -----------------------------------------------------
+
+# All columns
+write_csv(mr.ldc003,
+          file = "data/versions-from-R/05.4_LDC-points_v003.csv")
+
+# GIS join
+write_csv(mr.ldc003.gisjoin,
+          file = "data/versions-from-R/05.4_LDC-points_v003-gisjoin.csv")
+
+
+
 save.image("RData/05.4_most-recent_trt_v003.RData")
