@@ -36,6 +36,10 @@ Updated: 2026-01-07
     - Rows with no `DateVisted` value were removed.
     - For rules about decisions regarding multiple rows/instances of the same `DateVisted` value, see the `data-wrangling-intermediate/05.4b_edited3_LDC_multiple-same-DateVisted.xlsx` spreadsheet (only one row per location was preserved).
 
+### v005
+- <u>Script:</u> `05.6_prescribed-fires-added_v003.R`
+- Treatment info (GIS join columns) for prescribed fire polygons included in the USGS Combined Wildland Fire Datasets but not in the LTDL dataset.
+
 ## Directory
 - `01_Project-info_v000.csv` (created 2025-12-04)
 - `01_Treatment-info_v000csv` (created 2025-12-04)
@@ -45,3 +49,5 @@ Updated: 2026-01-07
 - `05.3_Treatment-info_v002-gisjoin.csv` (created 2025-12-16)
 - `05.4_LDC-points_v003.csv` (created 2026-01-07)
 - `05.4_LDC-points_v003-gisjoin.csv` (created 2026-01-07)
+- `05.6_RxFiresAdded-treatment-info_v005.csv` (created 2026-01-07)
+- `05.6_RxFiresAdded-treatment-info_v005-gisjoin.csv` (created 2026-01-07)
