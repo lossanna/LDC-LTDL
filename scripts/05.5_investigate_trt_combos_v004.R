@@ -121,3 +121,25 @@ trt.ldc <- trt.ldc.sjoin %>%
          Treatment_Type) %>% 
   distinct(.keep_all = TRUE)
 
+
+
+# Investigate treatment categories ----------------------------------------
+
+# Check for hierarchy
+trt.ldc %>%
+  distinct(Trt_Type_Major, Trt_Type_Sub, Treatment_Type) %>%
+  summarise(
+    n_sub   = n_distinct(Trt_Type_Sub),
+    n_major = n_distinct(Trt_Type_Major),
+    .by = Treatment_Type
+  ) %>%
+  filter(n_sub > 1 | n_major > 1) # fully hierarchical
+
+# Build hierarchy table
+major.to.treatment <- trt.ldc %>% 
+  distinct(Trt_Type_Major, Trt_Type_Sub, Treatment_Type) %>% 
+  arrange(Trt_Type_Major) %>% 
+  arrange(Trt_Type_Sub)
+
+#   Check for matching lengths to verify hierarchy (should have only one row per Treatment_Type)
+length(unique(trt.ldc$Treatment_Type)) == nrow(major.to.treatment)

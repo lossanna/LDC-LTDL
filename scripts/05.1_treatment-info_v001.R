@@ -33,6 +33,52 @@ treatment.info <- treatment.info %>%
 
 
 
+# Check for treatment hierarchy -------------------------------------------
+
+# Hierarchy test
+hierarchy.violations <- treatment.info %>%
+  distinct(Trt_Type_Major, Trt_Type_Sub, Treatment_Type) %>%
+  summarise(
+    n_sub   = n_distinct(Trt_Type_Sub),
+    n_major = n_distinct(Trt_Type_Major),
+    .by = Treatment_Type
+    ) %>%
+  filter(n_sub > 1 | n_major > 1)
+hierarchy.violations
+
+# Investigate problem Treatment_Types
+treatment.info %>%
+  filter(Treatment_Type %in% hierarchy.violations$Treatment_Type) %>%
+  count(Treatment_Type, Trt_Type_Major, Trt_Type_Sub) # clearly some were just miscategorized
+
+# Remove problem Treatment_Types to be able to make hierarchy table
+treatment.info.hierarchy <- treatment.info %>% 
+  filter(
+    !(Treatment_Type == "Ground Seeding: Drill" & Trt_Type_Major == "Vegetation/Soil Manipulation") &
+      !(Treatment_Type == "Timber: Timber Harvest" & Trt_Type_Major == "Other") &
+      !(Treatment_Type == "Aerial Seeding" & Trt_Type_Major == "Vegetation/Soil Manipulation") &
+      !(Treatment_Type == "General Treatment: Vegetation Removal" & Trt_Type_Major == "Vegetation/Soil Manipulation") & 
+      !(Treatment_Type == "Vegetation Disturbance: Thinning" & Trt_Type_Sub == "Timber")
+    )
+
+# Build hierarchy table
+major.to.treatment <- treatment.info.hierarchy %>% 
+  distinct(Trt_Type_Major, Trt_Type_Sub, Treatment_Type) %>% 
+  arrange(Treatment_Type) %>% 
+  arrange(Trt_Type_Sub) %>% 
+  arrange(Trt_Type_Major)
+
+#   Check for matching lengths to verify hierarchy (should have only one row per Treatment_Type)
+length(unique(treatment.info$Treatment_Type)) == nrow(major.to.treatment)
+
+
+
+# Write treatment hierarchy table to CSV ----------------------------------
+
+write_csv(major.to.treatment,
+          file = "data/data-wrangling-intermediate/05.1_treatment-hierarchy-table.csv")
+
+
 # Init_Date ---------------------------------------------------------------
 
 # Split date into three columns
