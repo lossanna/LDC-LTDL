@@ -1,7 +1,7 @@
 # README for `scripts/`
 
 Created: 2025-12-04  
-Updated: 2026-01-07
+Updated: 2026-01-09
 
 A list of scripts, including their purpose, output files (includes entire file path), and any input files created from ArcGIS geoprocessing (from `data/GIS-exports/` folder).
 
@@ -74,3 +74,26 @@ A list of scripts, including their purpose, output files (includes entire file p
 - <u>Outputs:</u>
     - `data/versions-from-R/05.4_LDC-points_v003.csv`
     - `data/versions-from-R/05.4_LDC-points_v003-gisjoin.csv`
+
+
+### `05.5_investigate-trt-combos_v004.R`
+- <u>Purpose:</u> Extract most recent treatment for each polygon that occupies unique space, as well as any treatments within a year of most recent treatment. Investigate treatment combinations.
+- <u>Status:</u> This script is incomplete and abandoned because I decided I would add in the missing prescribed
+fire polygons from the combined fire dataset and then reexamine possible treatment combos.
+- <u>ArcGIS geoprocessing inputs:</u> (from `data/GIS-exports/`)
+    - `002_TrtPoly002-Union_export.csv`
+    - `002_TrtPoly002-Union_CountOverlapping_export.csv`
+    - `002_TrtPoly002_Union-OverlapTable_export.csv`
+    - `002_TrtPoly002_LDC_SpatialJoin_export.csv`
+
+
+### `05.7_treatment-info_v006.R`
+- <u>Purpose:</u> Examine treatments of polygons that will be used in downstream analysis (LTDL polygons plus prescribed fire polygons added from the combined fire dataset). Find most recent treatment and most recent treatment combos (within one year of most recent), and make appropriate categories.
+- <u>Status:</u> Complete.
+- <u>ArcGIS geoprocessing inputs:</u> (from `data/GIS-exports/`)
+    - `006_Trt006-Union_export.csv`
+    - `006_Trt006-Union-CountOverlapping_export.csv`
+    - `006_Trt006-Union-OverlapTable_export.csv`
+- <u>Outputs:</u>
+    - `data/versions-from-R/05.7_treatment-info_v006.csv`
+    - `data/versions-from-R/05.7_all-treatments-used-to-create-TreatmentInfo006.csv`
