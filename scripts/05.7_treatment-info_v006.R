@@ -1,5 +1,5 @@
 # Created: 2026-01-08
-# Updated: 2026-01-08
+# Updated: 2026-01-09
 
 # Purpose: Examine treatments of polygons that will be used in downstream analysis (LTDL polygons
 #   plus prescribed fire polygons added from the combined fire dataset). Find most recent
@@ -7,12 +7,29 @@
 #   appropriate categories.
 
 # Input: Map_006 outputs.
-# Output: Treatment info v006.
+# Output: Treatment info v006; table of original treatment info used to create treatment info v006
+#   (not filtered for only most recent treatments).
 
-# Status:
+# Status: Complete.
 
-# Filtering:
+# Additional treatment filtering:
 #   "Other" and "Cultural Protection" treatment polygons removed (Major category).
+
+# Most recent treatment combinations accepted: 
+#   (Treatments conducted within one year of most recent treatment; combinations selected based on 
+#   number of applicable polygons.)
+#     1. Aerial Seeding, Drill Seeding
+#     2. Aerial Seeding, Soil Disturbance
+#     3. Drill Seeding, Soil Disturbance
+#     4. Ground Seeding, Soil Disturbance
+#     5. Seeding, Soil Disturbance
+#     6. Aerial Seeding, Herbicide
+#     7. Drill Seeding, Herbicide
+
+# Otherwise, only most recent treatment was used.
+#   In cases where there was more than one treatment completed on the most recent date,
+#   only one treatment was selected. (This was based on somewhat arbitrary rules; see notes 
+#   in 05.7b_edited2.xlsx spreadsheet for explanation of decisions made.)
 
 
 library(tidyverse)
@@ -420,7 +437,13 @@ length(unique(trt.join$ObjectID_CountOverlapping)) == nrow(combo1)
 
 # Write to CSV ------------------------------------------------------------
 
+# Treatment info v006
 write_csv(combo1,
           file = "data/versions-from-R/05.7_treatment-info_v006.csv")
+
+# CSV to connect treatment info v006 with original Trt_IDs
+write_csv(trt.join,
+          file = "data/versions-from-R/05.7_all-treatments-used-to-create-TreatmentInfo006.csv")
+
 
 save.image("RData/05.7_treatment-info_v006.RData")
