@@ -5,6 +5,9 @@
 #   as well as any treatments within a year of most recent treatment. Investigate
 #   treatment combinations.
 
+# This script is incomplete and abandoned because I decided I would add in the missing prescribed
+#   fire polygons from the combined fire dataset and then reexamine possible treatment combos.
+
 
 library(tidyverse)
 library(readxl)

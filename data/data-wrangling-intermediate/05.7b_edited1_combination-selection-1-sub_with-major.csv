@@ -1,0 +1,8 @@
+combo_sub,Trt_Type_Major
+"Aerial Seeding, Drill Seeding",Seeding
+"Aerial Seeding, Herbicide","Seeding, Herbicide/Weeds/Chemical"
+"Aerial Seeding, Soil Disturbance","Seeding, Vegetation/Soil Manipulation"
+"Drill Seeding, Herbicide","Seeding, Herbicide/Weeds/Chemical"
+"Drill Seeding, Soil Disturbance","Seeding, Vegetation/Soil Manipulation"
+"Ground Seeding, Soil Disturbance","Seeding, Vegetation/Soil Manipulation"
+"Seeding, Soil Disturbance","Seeding, Vegetation/Soil Manipulation"
