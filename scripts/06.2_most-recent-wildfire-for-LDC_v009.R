@@ -263,6 +263,7 @@ post.add <- post.all %>%
          Map_Digitization_Method = NA,
          Data_Notes = NA,
          Processing_Notes = NA,
+         WildfirePolyID = NA,
          LDC_MR_wildfire_date = NA,
          LDC_MR_wildfire_date_col = NA) %>% 
   distinct(.keep_all = TRUE)
@@ -275,6 +276,7 @@ by.datecol <- bind_rows(mr.by.datecol, post.add)
  
 # Check for missing primary keys
 setdiff(has.datecol$PrimaryKey, by.datecol$PrimaryKey)
+
 
 
 # By Fire_Calendar_Year ---------------------------------------------------
@@ -297,8 +299,8 @@ mr.by.year <- has.year %>%
 
 # When wildfire date is after DateVisted
 post.year <- has.year %>% 
-  mutate(most_recent_fire_date = paste0(Fire_Calendar_Year, "-12-31")) %>% 
-  mutate(LDC_MR_wildfire_date = as.Date(most_recent_fire_date)) %>% 
+  mutate(LDC_MR_wildfire_date = paste0(Fire_Calendar_Year, "-12-31")) %>% 
+  mutate(LDC_MR_wildfire_date = as.Date(LDC_MR_wildfire_date)) %>% 
   mutate(LDC_MR_wildfire_date_col = "Fire_Calendar_Year (estimated month and day)") %>% 
   filter(DateVisted < LDC_MR_wildfire_date) 
   
@@ -343,6 +345,7 @@ post.year.add <- post.year %>%
          Map_Digitization_Method = NA,
          Data_Notes = NA,
          Processing_Notes = NA,
+         WildfirePolyID = NA,
          LDC_MR_wildfire_date = NA,
          LDC_MR_wildfire_date_col = NA) %>% 
   distinct(.keep_all = TRUE)
@@ -393,6 +396,7 @@ by.year.missing.add <- by.year.missing %>%
          Map_Digitization_Method = NA,
          Data_Notes = NA,
          Processing_Notes = NA,
+         WildfirePolyID = NA,
          LDC_MR_wildfire_date = NA,
          LDC_MR_wildfire_date_col = NA) %>% 
   distinct(.keep_all = TRUE)
@@ -418,10 +422,25 @@ unique(sort(unique(ldc.wildfire.sj.raw$PrimaryKey)) == sort(most.recent.fire$Pri
 
 
 
+# Fires after LDC DateVisted ----------------------------------------------
+
+# Combine
+fires.post.ldc <- post.all %>% 
+  bind_rows(post.year) %>% 
+  select(JOIN_FID) %>% 
+  distinct(.keep_all = TRUE)
+
+
+
 # Write to CSV ------------------------------------------------------------
 
+# LDC points with most recent wildfire
 write_csv(most.recent.fire,
           file = "data/versions-from-R/06.2_LDC003-with-most-recent-wildfire-polygon_v009.csv")
+
+# Wildfire polygons to remove (occurred after LDC DateVisted)
+write_csv(fires.post.ldc,
+          file = "data/versions-from-R/06.2_wildfire-polygons-post-LDC-DateVisted_v009.csv")
 
 
 save.image("RData/06.2_most-recent-wildfire-for-LDC_v009.RData")
