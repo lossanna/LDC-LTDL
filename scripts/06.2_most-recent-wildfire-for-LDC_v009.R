@@ -437,6 +437,8 @@ fires.post.ldc <- post.all %>%
 # LDC points with most recent wildfire
 write_csv(most.recent.fire,
           file = "data/versions-from-R/06.2_LDC003-with-most-recent-wildfire-polygon_v009.csv")
+#   Manually edit this CSV to remove all the instances of "NA" because ArcGIS Pro will read this in
+#     as text, and save the CSV as a separate file so it doesn't get overwritten.
 
 # Wildfire polygons to remove (occurred after LDC DateVisted)
 write_csv(fires.post.ldc,
